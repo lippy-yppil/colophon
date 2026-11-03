@@ -10,6 +10,7 @@ use App\Models\Genre;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -36,6 +37,10 @@ class BookController extends Controller
     {
         $data = $request->safe()->except(['genres', 'cover']);
 
+        if ($request->hasFile('cover')) {
+            $data['cover_path'] = $request->file('cover')->store('covers', 'public');
+        }
+
         $book = $request->user()->books()->create($data);
         $book->genres()->sync($request->validated('genres'));
 
@@ -61,8 +66,18 @@ class BookController extends Controller
             unset($data['status']);
         }
 
+        $oldCover = $book->cover_path;
+
+        if ($request->hasFile('cover')) {
+            $data['cover_path'] = $request->file('cover')->store('covers', 'public');
+        }
+
         $book->update($data);
         $book->genres()->sync($request->validated('genres'));
+
+        if (isset($data['cover_path']) && $oldCover) {
+            Storage::disk('public')->delete($oldCover);
+        }
 
         return redirect()->route('books.index')
             ->with('status', 'Buku berhasil diperbarui.');
@@ -76,7 +91,13 @@ class BookController extends Controller
             return back()->with('error', 'Buku ini punya riwayat peminjaman, jadi tidak bisa dihapus. Sembunyikan saja dari rak.');
         }
 
+        $coverPath = $book->cover_path;
+
         $book->delete();
+
+        if ($coverPath) {
+            Storage::disk('public')->delete($coverPath);
+        }
 
         return redirect()->route('books.index')
             ->with('status', 'Buku dihapus dari rakmu.');
