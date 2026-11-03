@@ -47,6 +47,19 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="region_id" value="Kota" />
+            <select id="region_id" name="region_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
+                <option value="">Pilih kota</option>
+                @foreach ($regions as $region)
+                    <option value="{{ $region->id }}" @selected(old('region_id', $user->region_id) == $region->id)>
+                        {{ $region->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('region_id')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

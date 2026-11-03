@@ -16,6 +16,20 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Region -->
+         <div class="mt-4">
+            <x-input-label for="region_id" value="Kota" />
+            <select id="region_id" name="region_id" class="block mt-1 w-full" required>
+                <option value="">Pilih kota</option>
+                @foreach ($regions as $region)
+                    <option value="{{ $region->id }}" @selected(old('region_id') == $region->id)>
+                        {{ $region->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('region_id')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
