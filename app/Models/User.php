@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 
 class User extends Authenticatable
 {
@@ -49,8 +52,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function region(): BelongsTo
+        public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class, 'owner_id');
+    }
+
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'borrower_id');
+    }
+
+    public function incomingLoans(): HasManyThrough
+    {
+        return $this->hasManyThrough(Loan::class, Book::class, 'owner_id', 'book_id');
     }
 }

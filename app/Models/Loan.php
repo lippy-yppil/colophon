@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\LoanStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Loan extends Model
 {
@@ -22,5 +23,15 @@ class Loan extends Model
             'approved_at'  => 'datetime',
             'returned_at'  => 'datetime',
         ];
+    }
+
+    public function book(): BelongsTo
+    {
+        return $this->belongsTo(Book::class);
+    }
+
+    public function borrower(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'borrower_id');
     }
 }
