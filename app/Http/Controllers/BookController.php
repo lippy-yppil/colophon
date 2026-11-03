@@ -102,4 +102,26 @@ class BookController extends Controller
         return redirect()->route('books.index')
             ->with('status', 'Buku dihapus dari rakmu.');
     }
+
+        public function toggleVisibility(Book $book): RedirectResponse
+    {
+        Gate::authorize('update', $book);
+
+        if ($book->status === BookStatus::Borrowed) {
+            return back()->with('error', 'Buku yang sedang dipinjam tidak bisa disembunyikan.');
+        }
+
+        $book->update([
+            'status' => $book->status === BookStatus::Hidden
+                ? BookStatus::Available
+                : BookStatus::Hidden,
+        ]);
+
+        return back()->with(
+            'status',
+            $book->status === BookStatus::Hidden
+                ? 'Buku disembunyikan dari rak publik.'
+                : 'Buku ditampilkan kembali di rak publik.'
+        );
+    }
 }

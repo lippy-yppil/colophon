@@ -48,6 +48,15 @@
                             {{ $book->status->value }}
                         </span>
                         <a href="{{ route('books.edit', $book) }}" class="text-sm underline">Ubah</a>
+                        @if ($book->status !== \App\Enums\BookStatus::Borrowed)
+                            <form method="POST" action="{{ route('books.visibility', $book) }}">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="text-sm underline">
+                                    {{ $book->status === \App\Enums\BookStatus::Hidden ? 'Tampilkan' : 'Sembunyikan' }}
+                                </button>
+                            </form>
+                        @endif
                         <form method="POST" action="{{ route('books.destroy', $book) }}"
                               onsubmit="return confirm('Hapus buku ini dari rakmu?')">
                             @csrf
