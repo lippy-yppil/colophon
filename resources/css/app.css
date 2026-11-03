@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root,
+:root[data-theme="alexandria"] {
+  --bg: #F1E8D4;
+  --surface: #FBF6E9;
+  --ink: #1B1F2A;
+  --muted: #6B6556;
+  --accent: #A63D2F;
+  --accent-2: #1F3A2E;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'EB Garamond', serif;
+  --radius: 4px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
