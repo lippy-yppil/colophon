@@ -5,7 +5,7 @@ use App\Models\User;
 
 class ShelfController extends Controller
 {
-    // T20: Rak semua pengguna (Eager loading genre & region untuk cegah masalah N+1)
+    // T20: Rak semua pengguna
     public function index()
     {
         $books = Book::where('status', 'available')
