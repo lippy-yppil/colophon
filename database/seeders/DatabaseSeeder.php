@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             UserSeeder::class,
             BookSeeder::class,
+            LoanSeeder::class,
         ]);
     }
 }
