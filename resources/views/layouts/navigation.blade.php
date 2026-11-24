@@ -15,6 +15,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('shelf.index')" :active="request()->routeIs('shelf.*')">
+                        {{ __('Rak Buku') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('search.index')" :active="request()->routeIs('search.*')">
+                        {{ __('Cari Buku') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -82,6 +90,14 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">
                     {{ __('Rak Saya') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('shelf.index')" :active="request()->routeIs('shelf.*')">
+                    {{ __('Rak Buku') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('search.index')" :active="request()->routeIs('search.*')">
+                    {{ __('Cari Buku') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
