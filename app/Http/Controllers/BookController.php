@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -23,6 +24,17 @@ class BookController extends Controller
             ->paginate(10);
 
         return view('books.index', compact('books'));
+    }
+
+    public function show(Book $book): View
+    {
+        if ($book->status === BookStatus::Hidden && (int) $book->owner_id !== (int) Auth::id()) {
+            abort(403, 'Buku ini disembunyikan.');
+        }
+
+        $book->load(['owner.region', 'genres']);
+
+        return view('books.show', compact('book'));
     }
 
     public function create(): View
